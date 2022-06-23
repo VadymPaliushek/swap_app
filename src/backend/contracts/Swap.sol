@@ -16,5 +16,5 @@ contract Swap {
         uint value = msg.value;
         uint percent = percentSend[_account];
         payable(_account).transfer( value * percent /100 / 100 );
-    }
+    } 
 }
