@@ -1,15 +1,27 @@
-# Basic Sample Hardhat Project
+# Swap smart contract
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
+This project is a smart contract which swaps ethers to several accounts with
+ weights.
 
-Try running some of the following tasks:
+## Available Scripts
 
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
-```
+In the project directory, you can run:
+
+### `npm install`
+Install the dependencies in package.json.
+
+### `npx hardhat compile`
+Compile the contracts in the project.
+
+### `npx hardhat node`
+Started HTTP and WebSocket JSON-RPC server at http://127.0.0.1:8545/
+And Show the accounts.
+
+### `npx hardhat run --network localhost src/backend/scripts/deploy.js`
+Deploy the smart contract in the localhost network
+
+### `npx hardhat test`
+Test the smart contract in hardhat.
+
+
+
