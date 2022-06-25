@@ -7,7 +7,8 @@ describe("Swap", function () {
 
   let accounts
   let swap
-  let percents = [5, 5, 10] // In frontend, weights will be set.
+  // In frontend, weights will be set. And percents length will be set by customers. I set 3 percents.
+  let percents = [5, 5, 10] 
   let sendValue = 200
 
   beforeEach(async function () {
@@ -25,24 +26,27 @@ describe("Swap", function () {
   describe("Distributing", function() {
     it("it sends ether to several wallets successfully", async function() {
       const count = percents.length
+      let initialAdd1Balance = new Array()
+      let finalAdd1Balance
+      console.log("length===", accounts.length)
       let weight = 0
-      for(let i = 0; i < count; i ++){
-        weight += percents[i]
+      for(let i = 1; i < count + 1; i ++){
+        weight += percents[i-1]
+        await swap.addAccount(accounts[i].address, percents[i-1])
+        console.log("account"+i, accounts[i].address)
+        initialAdd1Balance[i] = +fromWei(await accounts[i].getBalance())
+        console.log("initialAdd1Balance==", initialAdd1Balance[i])
       }
       // const initialAdd1Balance = await accounts[1].getBalance()
-      // console.log("initialAdd1Balance==", +fromWei(initialAdd1Balance))
-      console.log("length===", accounts.length)
-      console.log("weight==", weight)
+    
+      console.log("weight==", await swap.weight())
+      await swap.distribute({ value: toWei(sendValue) })
       
-      for(let i = 1; i < count; i ++) {
-        console.log("account"+i, accounts[i].address)
-        const initialAdd1Balance = await accounts[i].getBalance()
-        console.log("initialAdd1Balance==", +fromWei(initialAdd1Balance))
-        // await swap.addAccounts(accounts[i].address, percents[i]*100)
-        await swap.distribute(accounts[i].address, percents[i], weight, { value: toWei(sendValue) })
-        const finalAdd1Balance = await accounts[i].getBalance()
+      for(let i = 1; i < count + 1; i ++) {
+        
+        finalAdd1Balance = await accounts[i].getBalance()
         console.log("finalAdd1Balance==", +fromWei(finalAdd1Balance))
-        expect(+fromWei(finalAdd1Balance)).to.equal(+fromWei(initialAdd1Balance) + 200*percents[i]/weight)
+        expect(+fromWei(finalAdd1Balance)).to.equal(initialAdd1Balance[i] + 200*percents[i-1]/weight)
       }
     })
   })
