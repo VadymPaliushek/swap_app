@@ -17,10 +17,13 @@ Compile the contracts in the project.
 Started HTTP and WebSocket JSON-RPC server at http://127.0.0.1:8545/
 And Show the accounts.
 
-### `npx hardhat run --network localhost src/backend/scripts/deploy.js`
-Deploy the smart contract in the localhost network
+### `npx hardhat run --network matic src/backend/scripts/deploy.js`
+Deploy the smart contract in the matic polygon network
 
-### `npx hardhat test`
+### `npx hardhat run --network localhost src/backend/scripts/deploy.js`
+Deploy the smart contract in the localhost hardhat network
+
+### `npx hardhat test --network localhost`
 Test the smart contract in hardhat.
 
 

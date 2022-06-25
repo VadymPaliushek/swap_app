@@ -7,8 +7,7 @@ describe("Swap", function () {
 
   let accounts
   let swap
-  let count = 20
-  let percents = [5, 5, 8, 2, 9, 1, 3.6, 6.4, 7, 3, 3, 7, 6, 4, 6, 4, 5, 5, 7, 3]
+  let percents = [5, 5, 10] // In frontend, weights will be set.
   let sendValue = 200
 
   beforeEach(async function () {
@@ -25,20 +24,25 @@ describe("Swap", function () {
   })
   describe("Distributing", function() {
     it("it sends ether to several wallets successfully", async function() {
-      
-      const initialAdd1Balance = await accounts[1].getBalance()
-      console.log("initialAdd1Balance==", +fromWei(initialAdd1Balance))
+      const count = percents.length
+      let weight = 0
+      for(let i = 0; i < count; i ++){
+        weight += percents[i]
+      }
+      // const initialAdd1Balance = await accounts[1].getBalance()
+      // console.log("initialAdd1Balance==", +fromWei(initialAdd1Balance))
       console.log("length===", accounts.length)
+      console.log("weight==", weight)
       
       for(let i = 1; i < count; i ++) {
         console.log("account"+i, accounts[i].address)
         const initialAdd1Balance = await accounts[i].getBalance()
         console.log("initialAdd1Balance==", +fromWei(initialAdd1Balance))
-        await swap.addAccounts(accounts[i].address, percents[i]*100)
-        await swap.distribute(accounts[i].address, { value: toWei(sendValue) })
+        // await swap.addAccounts(accounts[i].address, percents[i]*100)
+        await swap.distribute(accounts[i].address, percents[i], weight, { value: toWei(sendValue) })
         const finalAdd1Balance = await accounts[i].getBalance()
         console.log("finalAdd1Balance==", +fromWei(finalAdd1Balance))
-        expect(+fromWei(finalAdd1Balance)).to.equal(+fromWei(initialAdd1Balance) + 200*percents[i]*100/10000)
+        expect(+fromWei(finalAdd1Balance)).to.equal(+fromWei(initialAdd1Balance) + 200*percents[i]/weight)
       }
     })
   })
