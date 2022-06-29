@@ -10,7 +10,7 @@ In the project directory, you can run:
 ### `npm install`
 Install the dependencies in package.json.
 
-### `cp .env.example .env`
+### `copy .env.example .env`
 Set the values shown in `.env.example` as environmental variables. To copy it into a `.env` file:
 
 ### `npx hardhat compile`
