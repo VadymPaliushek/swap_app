@@ -10,8 +10,8 @@ In the project directory, you can run:
 ### `npm install`
 Install the dependencies in package.json.
 
-### `npm install dotenv`
-Install the env dependency in package.json and use variables in env.file.
+### `cp .env.example .env`
+Set the values shown in `.env.example` as environmental variables. To copy it into a `.env` file:
 
 ### `npx hardhat compile`
 Compile the contracts in the project.
