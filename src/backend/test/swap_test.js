@@ -7,15 +7,24 @@ describe("Swap", function () {
 
   let accounts
   let swap
-  // In frontend, weights will be set. And percents length will be set by customers. I set 3 percents.
-  let percents = [5, 5, 10] 
+  let weight = 0
+  
+  // In backend, weight length munst be small than accounts length.
+  let percents = [5, 5, 0, 10] 
+  const count = percents.length
+  
   let sendValue = 200
 
   beforeEach(async function () {
     const Swap = await ethers.getContractFactory("Swap");
     
     accounts = await ethers.getSigners()
+
     swap = await Swap.deploy();
+
+    for(let i = 1; i < count + 1; i ++){
+      await swap.addAccount(accounts[i].address, percents[i-1])
+    }
   })
 
   describe("Development", function() {
@@ -24,19 +33,20 @@ describe("Swap", function () {
     })
   })
   describe("Distributing", function() {
+    
     it("it sends ether to several wallets successfully", async function() {
-      const count = percents.length
+   
       let initialAdd1Balance = new Array()
       let finalAdd1Balance
       console.log("length===", accounts.length)
-      let weight = 0
+      
       for(let i = 1; i < count + 1; i ++){
         weight += percents[i-1]
-        await swap.addAccount(accounts[i].address, percents[i-1])
         console.log("account"+i, accounts[i].address)
         initialAdd1Balance[i] = +fromWei(await accounts[i].getBalance())
         console.log("initialAdd1Balance==", initialAdd1Balance[i])
       }
+
       // const initialAdd1Balance = await accounts[1].getBalance()
     
       console.log("weight==", await swap.weight())
@@ -48,6 +58,14 @@ describe("Swap", function () {
         console.log("finalAdd1Balance==", +fromWei(finalAdd1Balance))
         expect(+fromWei(finalAdd1Balance)).to.equal(initialAdd1Balance[i] + 200*percents[i-1]/weight)
       }
+    })
+  })
+  describe("Managing Accounts", function() {
+    it("Account is removed successfully", async function() {
+        const remove_account = "0x90F79bf6EB2c4f870365E785982E1f101E93b906"
+        await swap.removeAccount(remove_account)
+        let account_length = await swap.count()
+        expect(account_length).to.equal(count - 1)
     })
   })
 });
