@@ -1,14 +1,16 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
 
-contract Swap {
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract Swap is Ownable {
     string public name = "Swap Eth or Tokens";
     address[] public wallet_accounts; 
     uint public count;
     mapping(address=>uint) public percentSend;
     uint public weight = 0;
 
-    function addAccount(address _account, uint _percent) public {
+    function addAccount(address _account, uint _percent) public onlyOwner {
 
         require( _account != address(0), "account must not be null");
         wallet_accounts.push(_account);
@@ -27,7 +29,7 @@ contract Swap {
         }
     }
 
-    function removeAccount(address _account) public {
+    function removeAccount(address _account) public onlyOwner {
         
         uint id = getAccountId(_account);
         for (uint i = id; i < count; i ++) {

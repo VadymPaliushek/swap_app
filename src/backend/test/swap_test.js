@@ -49,15 +49,16 @@ describe("Swap", function () {
 
       // const initialAdd1Balance = await accounts[1].getBalance()
     
-      console.log("weight==", await swap.weight())
       await swap.distribute({ value: toWei(sendValue) })
-      
+      console.log("weight==", await swap.weight())
       for(let i = 1; i < count + 1; i ++) {
         
         finalAdd1Balance = await accounts[i].getBalance()
         console.log("finalAdd1Balance==", +fromWei(finalAdd1Balance))
         expect(+fromWei(finalAdd1Balance)).to.equal(initialAdd1Balance[i] + 200*percents[i-1]/weight)
       }
+      const ownerbalance = await accounts[0].getBalance()
+      console.log("owner balance ===", +fromWei(ownerbalance))
     })
   })
   describe("Managing Accounts", function() {
