@@ -65,8 +65,10 @@ describe("Swap", function () {
     it("Account is removed successfully", async function() {
         const remove_account = "0x90F79bf6EB2c4f870365E785982E1f101E93b906"
         await swap.removeAccount(remove_account)
+        const remove_account_2 = "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65"
+        await swap.removeAccount(remove_account_2)
         let account_length = await swap.count()
-        expect(account_length).to.equal(count - 1)
+        expect(account_length).to.equal(count - 2)
     })
   })
 });

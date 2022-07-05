@@ -16,6 +16,7 @@ contract Swap is Ownable {
         wallet_accounts.push(_account);
         percentSend[_account] = _percent;
         weight += _percent;
+        count = wallet_accounts.length;
     }
 
     function distribute() payable public {
@@ -42,7 +43,7 @@ contract Swap is Ownable {
 
     function getAccountId(address _account) view public returns(uint){
         uint accoutId = 0;
-        while(accoutId < count){
+        while(accoutId < wallet_accounts.length){
             if(_account == wallet_accounts[accoutId]) {
                 break;
             } 
